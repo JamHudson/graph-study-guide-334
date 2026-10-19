@@ -306,6 +306,25 @@ public class Practice {
    * @return an unsorted list of next moves
    */
   public static List<int[]> nextMoves(char[][] board, int[] current, int[][] directions) {
-    return null;
+    List<int[]> nextMoveList = new ArrayList<>();
+
+    for (var direction : directions) {
+      int newX = current[0] + direction[0];
+      int newY = current[1] + direction[1];
+      // Out of bounds check
+      if (!isInBounds(newX,newY, board)) continue;
+      // Invalid spot check
+      if (board[newX][newY] == 'X') continue;
+      nextMoveList.add(new int[] {newX, newY});
+    }
+
+    return nextMoveList;
+  }
+
+  private static boolean isInBounds(int x, int y, char[][] board) {
+    if (x >= board.length || x < 0) return false;
+    if (y >= board[0].length || y < 0) return false;
+
+    return true;
   }
 }
