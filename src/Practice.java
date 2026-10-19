@@ -193,6 +193,22 @@ public class Practice {
    * @return whether there exists a valid positive path from starting to ending
    */
   public static boolean positivePathExists(Map<Integer, Set<Integer>> graph, int starting, int ending) {
+    if (graph.get(starting) == null || graph.get(ending) == null) return false;
+    Set<Integer> visited = new HashSet<>();
+    Stack<Integer> stack = new Stack<>();
+    
+    stack.add(starting);
+
+    while (!stack.isEmpty()) {
+      Integer current = stack.pop();
+      visited.add(current);
+      
+      if (current < 0) continue;
+      if (current == ending) return true;
+
+      for (var neighbor : graph.get(current)) if (!visited.contains(neighbor)) stack.add(neighbor);
+    }
+
     return false;
   }
 
