@@ -131,6 +131,52 @@ public class Practice {
    * @return true if there is a two-way connection between v1 and v2, false otherwise
    */
   public static <T> boolean twoWay(Vertex<T> v1, Vertex<T> v2) {
+    if (v1 == null || v2 == null) return false;
+    // Check if they're the same spot in memory
+    if (v1 == v2) return true;
+    Stack<Vertex<T>> stack = new Stack<>();
+    Set<Vertex<T>> visited = new HashSet<>();
+    boolean possible = false;
+
+    // Check if v2 can be reached from v1
+    stack.add(v1);
+
+    while (!stack.isEmpty()) {
+      Vertex<T> current = stack.pop();
+      
+      if (current == v2) {
+        // It can be reached!
+        possible = true;
+        break;
+      }
+      visited.add(current);
+      for (var neighbor : current.neighbors) if (!visited.contains(neighbor)) stack.add(neighbor);
+    }
+
+    // If v1 cannot reach v2, return a failure
+    if (!possible) return false;
+
+    // Reset stack and visited
+    stack.clear();
+    visited.clear();
+
+    // Check if v1 can be reached from v2
+    stack.add(v2);
+
+    while (!stack.isEmpty()) {
+      Vertex<T> current = stack.pop();
+
+      if (current == v1) {
+        // It can be reached!
+        return true;
+      }
+      visited.add(current);
+      for (var neighbor : current.neighbors)
+        if (!visited.contains(neighbor))
+          stack.add(neighbor);
+    }
+
+    // v2 cannot reach v1
     return false;
   }
 
