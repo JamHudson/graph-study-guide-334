@@ -202,7 +202,7 @@ public class Practice {
     while (!stack.isEmpty()) {
       Integer current = stack.pop();
       visited.add(current);
-      
+
       if (current < 0) continue;
       if (current == ending) return true;
 
@@ -222,6 +222,19 @@ public class Practice {
    * @return true if a person in the extended network works at the specified company, false otherwise
    */
   public static boolean hasExtendedConnectionAtCompany(Professional person, String companyName) {
+    if (person == null) return false;
+    Set<Professional> visited = new HashSet<>();
+    Stack<Professional> stack = new Stack<>();
+
+    stack.add(person);
+
+    while (!stack.isEmpty()) {
+      Professional current = stack.pop();
+      if (current.getCompany() == companyName) return true;
+      visited.add(current);
+      for (var connection : current.getConnections()) if (!visited.contains(connection)) stack.add(connection);
+    }
+
     return false;
   }
 
